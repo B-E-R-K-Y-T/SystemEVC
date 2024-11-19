@@ -65,7 +65,7 @@ urlpatterns = [
     path("auth/schema/", SpectacularAPIView.as_view(), name="schema"),
     # Optional UI:
     path(
-        "api/schema/docs/",
+        "docs/",
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
