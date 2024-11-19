@@ -2,6 +2,62 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+# Таблица Статусы Пользователей
+class UserStatus(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+# Таблица Роли
+class Role(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+# Таблица Должности
+class Position(models.Model):
+    title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+
+# Таблица Отделы
+class Department(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+# Модель пользователя с дополнительными полями
+class CustomUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    role = models.ForeignKey(
+        Role, on_delete=models.SET_NULL, null=True, related_name="users"
+    )
+    department = models.ForeignKey(
+        Department, on_delete=models.SET_NULL, null=True, related_name="users"
+    )
+    position = models.ForeignKey(
+        Position, on_delete=models.SET_NULL, null=True, related_name="users"
+    )
+    status = models.ForeignKey(
+        UserStatus, on_delete=models.SET_NULL, null=True, related_name="users"
+    )
+
+    def __str__(self):
+        return self.username
+
+
 # Таблица Статусы Работ
 class WorkStatus(models.Model):
     name = models.CharField(max_length=255)
@@ -25,8 +81,10 @@ class Work(models.Model):
     rollback_plan = models.TextField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    user_ids_works = models.ManyToManyField(User, related_name='works_conducted')
-    user_manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='works_managed')
+    user_ids_works = models.ManyToManyField(User, related_name="works_conducted")
+    user_manager = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="works_managed"
+    )
     status = models.ForeignKey(WorkStatus, on_delete=models.SET_NULL, null=True)
     priority = models.ForeignKey(WorkPriority, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -37,7 +95,9 @@ class Work(models.Model):
     dependencies = models.TextField(blank=True)  # Может быть сформатирован в JSON
     completed_at = models.DateTimeField(null=True, blank=True)
     cancelled_at = models.DateTimeField(null=True, blank=True)
-    last_updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='works_last_updated')
+    last_updated_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="works_last_updated"
+    )
 
 
 # Таблица Сервисы
@@ -46,12 +106,14 @@ class Service(models.Model):
     internal_ip = models.GenericIPAddressField()
     port = models.IntegerField()
     url = models.URLField(blank=True)
-    server = models.ForeignKey('Server', on_delete=models.SET_NULL, null=True)
+    server = models.ForeignKey("Server", on_delete=models.SET_NULL, null=True)
     status = models.ForeignKey(WorkStatus, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     owner = models.CharField(max_length=255)
-    service_type = models.ForeignKey('ServiceType', on_delete=models.SET_NULL, null=True)
+    service_type = models.ForeignKey(
+        "ServiceType", on_delete=models.SET_NULL, null=True
+    )
     protocol = models.CharField(max_length=50)
     dependencies = models.TextField(blank=True)  # Может быть сформатирован в JSON
     health_check_url = models.URLField(blank=True)
@@ -64,14 +126,14 @@ class Service(models.Model):
 # Таблица Серверы
 class Server(models.Model):
     hostname = models.CharField(max_length=255)
-    server_type = models.ForeignKey('ServerType', on_delete=models.SET_NULL, null=True)
+    server_type = models.ForeignKey("ServerType", on_delete=models.SET_NULL, null=True)
     internal_ip = models.GenericIPAddressField()
     external_ip = models.GenericIPAddressField()
     status = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True)
-    os = models.ForeignKey('OperatingSystem', on_delete=models.SET_NULL, null=True)
+    location = models.ForeignKey("Location", on_delete=models.SET_NULL, null=True)
+    os = models.ForeignKey("OperatingSystem", on_delete=models.SET_NULL, null=True)
     cpu_info = models.TextField()
     ram_size = models.CharField(max_length=50)
     disk_size = models.CharField(max_length=50)
@@ -103,8 +165,12 @@ class ServiceType(models.Model):
 
 # Таблица Зависимости Сервисов
 class ServiceDependency(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='service_dependencies')
-    dependency_service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='dependent_services')
+    service = models.ForeignKey(
+        Service, on_delete=models.CASCADE, related_name="service_dependencies"
+    )
+    dependency_service = models.ForeignKey(
+        Service, on_delete=models.CASCADE, related_name="dependent_services"
+    )
     dependency_type = models.CharField(max_length=255)
 
 
