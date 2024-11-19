@@ -187,8 +187,6 @@ admin/
 .settings/local.py
 
 # Docker stuff
-Dockerfile
-docker-compose.yml
 *.dockerignore
 
 # Celery logs
