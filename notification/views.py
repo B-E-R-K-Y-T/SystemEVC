@@ -1,5 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 from .models import (
     WorkStatus, WorkPriority, Work, Service, Server, ServerType,
     Location, OperatingSystem, ServiceType, ServiceDependency,
@@ -13,6 +16,9 @@ from .serializers import (
     ServiceDependencySerializer, WorkLogSerializer, NotificationSerializer
 )
 
+# Константа для времени кэширования
+CACHE_TIMEOUT = 60 * 15  # 15 минут
+
 
 class WorkStatusViewSet(viewsets.ModelViewSet):
     queryset = WorkStatus.objects.all()
@@ -23,6 +29,14 @@ class WorkStatusViewSet(viewsets.ModelViewSet):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class WorkPriorityViewSet(viewsets.ModelViewSet):
@@ -35,6 +49,14 @@ class WorkPriorityViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
 
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 
 class WorkViewSet(viewsets.ModelViewSet):
     queryset = Work.objects.all()
@@ -45,6 +67,14 @@ class WorkViewSet(viewsets.ModelViewSet):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
@@ -57,6 +87,14 @@ class ServiceViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
 
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 
 class ServerViewSet(viewsets.ModelViewSet):
     queryset = Server.objects.all()
@@ -67,6 +105,14 @@ class ServerViewSet(viewsets.ModelViewSet):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ServerTypeViewSet(viewsets.ModelViewSet):
@@ -79,6 +125,14 @@ class ServerTypeViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
 
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.all()
@@ -89,6 +143,14 @@ class LocationViewSet(viewsets.ModelViewSet):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class OperatingSystemViewSet(viewsets.ModelViewSet):
@@ -101,6 +163,14 @@ class OperatingSystemViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
 
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 
 class ServiceTypeViewSet(viewsets.ModelViewSet):
     queryset = ServiceType.objects.all()
@@ -111,6 +181,14 @@ class ServiceTypeViewSet(viewsets.ModelViewSet):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ServiceDependencyViewSet(viewsets.ModelViewSet):
@@ -123,6 +201,14 @@ class ServiceDependencyViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
 
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 
 class WorkLogViewSet(viewsets.ModelViewSet):
     queryset = WorkLog.objects.all()
@@ -134,6 +220,14 @@ class WorkLogViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdmin]
         return super().get_permissions()
 
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
@@ -144,3 +238,11 @@ class NotificationViewSet(viewsets.ModelViewSet):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
             self.permission_classes = [IsAdminOrEditor]
         return super().get_permissions()
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
