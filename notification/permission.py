@@ -26,8 +26,18 @@ class IsAdminOrEditor(permissions.BasePermission):
 
 class IsAdmin(permissions.BasePermission):
     """
-    Разрешает доступ только администраторам.
+    Разрешает доступ только пользователям с ролью администратора.
     """
 
     def has_permission(self, request, view):
-        return request.user and request.user.is_staff
+        # Проверяем, что пользователь аутентифицирован
+        if request.user and request.user.is_authenticated:
+            # Получаем связанного пользователя CustomUser
+            try:
+                custom_user = request.user.customuser
+                # Проверяем, является ли роль пользователя 'Администратор'
+                return custom_user.role.name == 'Admin'
+            except CustomUser.DoesNotExist:
+                return False
+
+        return False
