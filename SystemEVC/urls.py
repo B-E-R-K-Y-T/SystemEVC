@@ -37,7 +37,8 @@ from notification.views import (
     ServiceTypeViewSet,
     ServiceDependencyViewSet,
     WorkLogViewSet,
-    NotificationViewSet, CustomUserRegistrationView,
+    NotificationViewSet,
+    CustomUserRegistrationView,
 )
 
 router = DefaultRouter()

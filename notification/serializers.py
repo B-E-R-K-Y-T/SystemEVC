@@ -69,29 +69,41 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Извлечение данных для создания User
-        username = validated_data['username']
-        email = validated_data['email']
-        full_name = validated_data.pop('full_name')
+        username = validated_data["username"]
+        email = validated_data["email"]
+        full_name = validated_data.pop("full_name")
 
         # Разделите full_name на first_name и last_name, как вам нужно
         first_name, *last_name = full_name.split()
-        last_name = ' '.join(last_name)  # Объединение оставшихся частей в фамилию, если необходимо
+        last_name = " ".join(
+            last_name
+        )  # Объединение оставшихся частей в фамилию, если необходимо
 
         # Проверка существования пользователя с таким же username
         if User.objects.filter(username=username).exists():
-            raise serializers.ValidationError({"username": "Пользователь с таким именем уже существует."})
+            raise serializers.ValidationError(
+                {"username": "Пользователь с таким именем уже существует."}
+            )
 
         # Проверка существования пользователя с таким же email
         if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError({"email": "Пользователь с таким email уже существует."})
+            raise serializers.ValidationError(
+                {"email": "Пользователь с таким email уже существует."}
+            )
 
         # Создание объекта User
-        user = User(username=username, email=email, first_name=first_name, last_name=last_name)
-        user.set_password(validated_data.pop("password"))  # Установка зашифрованного пароля
+        user = User(
+            username=username, email=email, first_name=first_name, last_name=last_name
+        )
+        user.set_password(
+            validated_data.pop("password")
+        )  # Установка зашифрованного пароля
         user.save()  # Сохранение объекта User
 
         # Создание экземпляра CustomUser с объектом User
-        custom_user = CustomUser.objects.create(user=user, full_name=full_name, **validated_data)
+        custom_user = CustomUser.objects.create(
+            user=user, full_name=full_name, **validated_data
+        )
         return custom_user
 
 

@@ -17,10 +17,14 @@ class IsAdminOrEditor(permissions.BasePermission):
 
             # Проверяем, есть ли у пользователя роль редактора
             try:
-                custom_user = request.user.customuser  # Предполагаем, что связь OneToOne с CustomUser
+                custom_user = (
+                    request.user.customuser
+                )  # Предполагаем, что связь OneToOne с CustomUser
                 return custom_user.role and custom_user.role.name == "Editor"
             except CustomUser.DoesNotExist:
-                return False  # Если у пользователя нет соответствующей записи в CustomUser
+                return (
+                    False  # Если у пользователя нет соответствующей записи в CustomUser
+                )
         return False  # Если пользователь не аутентифицирован
 
 
@@ -36,7 +40,7 @@ class IsAdmin(permissions.BasePermission):
             try:
                 custom_user = request.user.customuser
                 # Проверяем, является ли роль пользователя 'Администратор'
-                return custom_user.role.name == 'Admin'
+                return custom_user.role.name == "Admin"
             except CustomUser.DoesNotExist:
                 return False
 
