@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
-REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/1")
+REDIS_URL = config("REDIS_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
