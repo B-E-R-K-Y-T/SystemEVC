@@ -21,6 +21,7 @@ from .models import (
 
 # Регистрация всех моделей в админке
 models = [
+    CustomUser,
     Role,
     Department,
     Position,
@@ -37,7 +38,6 @@ models = [
     ServiceDependency,
     WorkLog,
     Notification,
-    CustomUser,
 ]
 
 for model in models:
