@@ -28,6 +28,27 @@ REDIS_URL = config("REDIS_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+if not DEBUG:
+    # Запретить встраивание сайта в iframe
+    X_FRAME_OPTIONS = 'DENY'
+
+    # Установить флаг, чтобы сделать cookie CSRF недоступными для JavaScript
+    CSRF_COOKIE_HTTPONLY = True
+
+    # Установить флаг, чтобы сделать сессии безопасными через HTTPS
+    SESSION_COOKIE_SECURE = True
+
+    # Установить флаг, чтобы сделать cookie CSRF доступными только через HTTPS
+    CSRF_COOKIE_SECURE = True
+
+    # Перенаправление всех HTTP запросов на HTTPS
+    SECURE_SSL_REDIRECT = True
+
+    # Запретить MIME-тип определять по содержимому
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # Включить фильтр XSS в браузере
+    SECURE_BROWSER_XSS_FILTER = True
 
 ALLOWED_HOSTS = []
 
