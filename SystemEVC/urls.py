@@ -57,6 +57,7 @@ router.register(r"notifications", NotificationViewSet)
 
 
 urlpatterns = [
+    path("grappelli/", include("grappelli.urls")),  # grappelli URLS
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
     path("auth/register/", CustomUserRegistrationView.as_view(), name="api_register"),
